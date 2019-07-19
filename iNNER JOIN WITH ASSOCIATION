@@ -1,0 +1,19 @@
+@AbapCatalog.sqlViewName: 'ZASSO_FIC'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'cds ASSOCI'
+define view zcds_FIC_ASSOC
+  
+as select from zvbak as h 
+association[1..*] to
+zvbap as _ZVBAP
+on h.vbeln = _ZVBAP.vbeln {
+key h.vbeln,
+h.ernam,
+h.erdat,
+h.netwr,
+_ZVBAP[1:INNER].POSNR,// HERE WE HAVE BENIFIT OF SELECTING COLUMNS DYNAMICALLY
+_ZVBAP
+    
+}
