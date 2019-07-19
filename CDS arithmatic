@@ -1,0 +1,42 @@
+@AbapCatalog.sqlViewName: 'ZFIC'
+@AbapCatalog.preserveKey: true
+@EndUserText.label: 'FIC ka View'
+define view ZCDS_FIC_CDS as
+select from zvbak
+{
+key vbeln as sono,
+ltrim(vbeln, '0') as trimed,
+ernam,
+erdat,
+netwr,
+( netwr * 10 ) as fin_amt,
+
+//( netwr * 0.80) as disc_amt,
+(cast (netwr as abap.fltp) * 0.80) as disc_fltp,
+( cast( div ( netwr,100) as abap.dec( 15, 2 )) * 80 ) as castdiv,
+div ((netwr*80),100) as div,
+//normal
+case auart
+when 'TA' then 'Trasnport order'
+when 'OR1' then 'open order'
+else auart
+end as Ord_type ,
+
+case when netwr > 10000 then 'high order'
+when netwr between 3000 and 10000 then 'low order'
+else 'useless order'
+end as Order_txt,
+
+case when netwr > 10000 then netwr+10 
+when netwr between 3000 and 10000 then netwr+5
+else netwr
+end as Order_cal,
+
+currency_conversion( amount => netwr, 
+source_currency => waerk, 
+target_currency => cast('EUR' as abap.cuky), 
+exchange_rate_date => cast( '20190711' as abap.dats ) )
+as cuky
+
+
+}
