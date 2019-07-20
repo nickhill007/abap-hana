@@ -1,0 +1,43 @@
+@AbapCatalog.sqlViewName: 'ZCDS_FIORI_FIC'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'test'
+@VDM.viewType: #CONSUMPTION
+@Analytics.query: true
+@OData.publish: true
+define view ZCDS_FIORI_CFIC as select from ZCDS_CUBE_FIC {
+  //ZCDS_CUBE_FIC 
+  @Consumption.filter.selectionType: #RANGE
+   @Consumption.filter.multipleSelections: true
+   @Consumption.filter.mandatory: false
+   @AnalyticsDetails.query.axis: #ROWS
+  vbeln, 
+  @AnalyticsDetails.query.axis: #ROWS
+  posnr, 
+  @AnalyticsDetails.query.axis: #ROWS
+  erdat, 
+  @AnalyticsDetails.query.axis: #ROWS
+   @Consumption.filter.selectionType: #RANGE
+   @Consumption.filter.multipleSelections: true
+   @Consumption.filter.mandatory: false
+  lifnr,
+  @AnalyticsDetails.query.axis: #ROWS 
+   @Consumption.filter.selectionType: #RANGE
+   @Consumption.filter.multipleSelections: true
+   @Consumption.filter.mandatory: false
+  kunnr, 
+  @AnalyticsDetails.query.axis: #ROWS
+   @Consumption.filter.selectionType: #RANGE
+   @Consumption.filter.multipleSelections: true
+   @Consumption.filter.mandatory: false
+  matnr, 
+  @AnalyticsDetails.query.axis: #COLUMNS
+  @EndUserText.label: 'Bhari ki rao'
+  waerk, 
+ 
+  Currkey
+  /* Associations */ 
+  //ZCDS_CUBE_FIC 
+  
+}
