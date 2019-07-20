@@ -1,0 +1,32 @@
+@AbapCatalog.sqlViewName: 'ZCONSUMPTION'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'cube FIC'
+@Analytics.dataCategory: #CUBE
+@VDM.viewType: #CONSUMPTION
+@Analytics.dataExtraction: {enabled: true}
+
+define view ZCDS_CUBE_FIC as select from ZCDS_FIC_CDS_join as h
+association [0..1] to ZCDS_MATNR_DIM as _Material on $projection.matnr = _Material.matno
+association[0..1] to ZCUST_DIM as _Customer on $projection.kunnr = _Customer.customer
+association[0..1] to ZVENDO as _Vendor on $projection.lifnr = _Vendor.vednor
+ {
+    h.vbeln, 
+    h.posnr, 
+    h.erdat, 
+    @ObjectModel.foreignKey.association: '_Vendor'
+    h.lifnr, 
+    @ObjectModel.foreignKey.association: '_Customer'
+    h.kunnr, 
+    @ObjectModel.foreignKey.association: '_Material'
+    h.matnr, 
+    @Semantics.currencyCode: true
+    h.waerk, 
+    @Aggregation.default: #SUM
+    h.netpr, 
+    _Material,
+    _Customer,
+    _Vendor
+    
+}
