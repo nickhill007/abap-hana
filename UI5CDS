@@ -1,0 +1,53 @@
+@AbapCatalog.sqlViewName: 'ZCDS_ANAYFIC'
+@AbapCatalog.compiler.compareFilter: true
+@AbapCatalog.preserveKey: true
+@AccessControl.authorizationCheck: #CHECK
+@EndUserText.label: 'desc FIC'
+@OData.publish: true
+@Search.searchable: true
+define view ZCDS_FICANY as select from zvbak as h inner join zvbap as i 
+on h.vbeln = i.vbeln{
+@EndUserText.label: 'SALES DOC NO'
+@UI.selectionField: [{position: 10 }]
+@UI.identification: [{label: 'Sales order'  }]
+key h.vbeln,
+@UI.hidden: true
+key i.posnr,
+
+h.erdat,
+@UI.lineItem: [{position: 20 }]
+@EndUserText.label: 'customer name'
+@Search:{ defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+@UI.identification: [{label: 'customer name', position: 15 ,importance: #HIGH }]
+h.ernam,
+
+@UI.lineItem: [{position: 30 }]
+@EndUserText.label: 'Material number'
+@Search:{ defaultSearchElement: true, fuzzinessThreshold: 0.7 }
+@UI.identification: [{label: 'Material number', position: 20  ,importance: #HIGH }]
+@UI.selectionField: [{position: 40 }]
+i.matnr,
+
+@Semantics.currencyCode: true
+@UI.identification: [{label: 'header currency',position: 30,importance: #HIGH }]
+@UI.selectionField: [{position: 60 }]
+h.waerk as HCURR,
+@Aggregation.default: #SUM
+@Semantics.amount.currencyCode: 'HCURR'
+@UI.identification: [{label: 'header amount',position: 40,importance: #HIGH }]
+h.netwr,
+
+@UI.identification: [{label: 'item currency',position: 50,importance: #HIGH }]
+@Semantics.currencyCode: true
+i.waerk as ICURR,
+
+@Aggregation.default: #SUM
+@Semantics.amount.currencyCode: 'ICURR'
+@UI.identification: [{label: 'item amount',position: 60,importance: #HIGH }]
+i.netpr,
+
+@UI.identification: [{label: 'Quantity measure',position: 70,importance: #HIGH }]
+@Semantics.unitOfMeasure: true
+i.meins
+
+}
